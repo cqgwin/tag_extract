@@ -14,12 +14,8 @@ using namespace std;
 
 class TagExtractor{
  public:
-     void get_tags(string filename);
-     void get_stopword(string filename);
-     void get_labels(string filename);
-     void get_label_pair(string filename);
-     void get_idf(string filename);
-     void 
+     TagExtractor(string tags_path, string stopword_path, string labels_path, string idf_path, string label_pair_path);
+     ~TagExtractor();
  private:
      set<string> tags;
      set<string> stopword;
