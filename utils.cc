@@ -35,7 +35,7 @@ std::map<std::string,float> utils::get_map(std::string filename) {
     while(ifile.good()) {
         std::string line;
         getline(ifile, line);
-        std::vector<std::string> items = split(line, "\t");
+        std::vector<std::string> items = split(line, " ");
         float t_float = atof(items[1].c_str());
         word_map.insert(std::make_pair(items[0], t_float));
     }

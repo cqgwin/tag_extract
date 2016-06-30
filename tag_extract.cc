@@ -19,7 +19,7 @@ TagExtractor::~TagExtractor() {
 }
 
 bool cmp(std::pair<std::string, float> a, std::pair<std::string, float> b) {
-    return a.second > a.second;
+    return a.second > b.second;
 }
 
 std::vector< std::pair<std::string, float> > TagExtractor::extract(std::vector<std::string> words) {
@@ -31,6 +31,7 @@ std::vector< std::pair<std::string, float> > TagExtractor::extract(std::vector<s
             word_freq.insert(std::make_pair(s, 1));
         }
     }
+
     std::vector< std::pair<std::string, float> > tfidf;
     for(std::map<std::string, int>::iterator pos = word_freq.begin(); pos != word_freq.end(); pos++) {
         float tf = 1.0 * pos->second / words.size();
@@ -41,13 +42,13 @@ std::vector< std::pair<std::string, float> > TagExtractor::extract(std::vector<s
         }
     }
     std::sort(tfidf.begin(), tfidf.end(), cmp);
-    
+
     std::vector< std::pair<std::string, float> > cadidate_tags;
     for(unsigned int i = 0; i < 20; i++) {
         if(all_tags.find(tfidf[i].first) != all_tags.end())
             cadidate_tags.push_back(tfidf[i]);
     }
-    
+
     std::vector<std::pair<std::string, float> > label_score;
     for(std::set<std::string>::iterator pos = labels.begin(); pos != labels.end(); pos++) {
         float socre = 0;
@@ -62,12 +63,15 @@ std::vector< std::pair<std::string, float> > TagExtractor::extract(std::vector<s
         if(socre > 0) 
             label_score.push_back(make_pair(*pos, socre/sum_tfidf));
     }
+
     std::sort(label_score.begin(), label_score.end(), cmp);
-    std::string predict_label = label_score[0].first;
-    float predict_label_score = label_score[0].second;
+
     std::vector<std::pair<std::string, float> >predict_result;
-    predict_result.push_back(std::make_pair(predict_label, predict_label_score));
-    
+    if(label_score.size() > 0) {
+        std::string predict_label = label_score[0].first;
+        float predict_label_score = label_score[0].second;
+        predict_result.push_back(std::make_pair(predict_label, predict_label_score));
+    }
     int predict_size = cadidate_tags.size() > 5? 5: cadidate_tags.size();
     for(unsigned int i = 0; i <predict_size; i ++) {
         predict_result.push_back(cadidate_tags[i]);
