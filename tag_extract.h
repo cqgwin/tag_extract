@@ -10,18 +10,18 @@
 #include<map>
 #include<vector>
 
-using namespace std;
 
 class TagExtractor{
  public:
-     TagExtractor(string tags_path, string stopword_path, string labels_path, string idf_path, string label_pair_path);
+     TagExtractor(std::string tags_path, std::string stopword_path, std::string labels_path, std::string idf_path, std::string label_pair_path);
      ~TagExtractor();
+     std::vector< std::pair<std::string, float> > extract(std::vector<std::string> words);
  private:
-     set<string> tags;
-     set<string> stopword;
-     set<string> labels;
-     map<string, float> idf;
-     set< pair<string, string> >label_pair;
+     std::set<std::string> all_tags;
+     std::set<std::string> stopword;
+     std::set<std::string> labels;
+     std::map<std::string, float> idf;
+     std::map< std::pair<std::string, std::string>,float >label_pair;
 };
 
 
