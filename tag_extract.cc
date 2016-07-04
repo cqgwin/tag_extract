@@ -54,7 +54,7 @@ std::vector< std::pair<std::string, float> > TagExtractor::extract(std::vector<s
         float socre = 0;
         float sum_tfidf = 0;
         for(unsigned int i = 0; i < cadidate_tags.size(); i++) {
-            std::map< std::pair<std::string, std::string>,float >::iterator it = label_pair.find(make_pair(*pos, cadidate_tags[i].first));
+            std::map< std::pair<std::string, std::string>,float >::iterator it = label_pair.find(make_pair(cadidate_tags[i].first， *pos));
             if(it != label_pair.end()) {
                 socre += 1.0* it->second * cadidate_tags[i].second;
                 sum_tfidf += cadidate_tags[i].second;
